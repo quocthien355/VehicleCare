@@ -1,0 +1,36 @@
+{
+  "name": "vehicle-care",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "@vonage/server-sdk": "^3.5.1",
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-handlebars": "^7.0.7",
+    "firebase": "^10.2.0",
+    "fs-extra": "^11.1.1",
+    "hbs": "^4.2.0",
+    "http-errors": "~1.6.3",
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "~1.9.1",
+    "multer": "^1.4.5-lts.1",
+    "nexmo": "^2.9.1",
+    "node-localstorage": "^2.2.1",
+    "rand-token": "^1.0.1",
+    "socket.io": "^4.7.1",
+    "util": "^0.12.5",
+    "yarn": "^1.22.19"
+  },
+  "devDependencies": {
+    "mysql": "^2.18.1",
+    "nodemon": "^1.14.9"
+  }
+}

@@ -1,0 +1,119 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+       
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-left">
+            <li class="breadcrumb-item"><a href="#">Product</a></li>
+            <li class="breadcrumb-item active">Product Detail</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Default box -->
+    <div class="card card-solid">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-sm-6">
+
+            <div class="col-12" style="height: 65%;">
+
+              <img src="{{image.url}}" class="product-image" style="width: 300px;height: 300px;" alt="Product Image">
+            </div>
+            <div class="col-12 product-image-thumbs">
+
+
+
+              {{#each images}}
+              <div class="product-image-thumb"><img src="{{this.url}}" alt="Product Image"></div>
+              {{/each}}
+
+            </div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <h3 class="my-3" style="font-size: 30px;"><b>{{product.name}} </b></h3>
+            <hr>
+            <div class="  px-3 mt-4">
+              <h6 class="mb-1 " style="font-size: 20px; font-weight: 700;">
+                {{product.category}}-{{product.brand}}
+              </h6>
+
+
+
+            </div>
+            <div class="text-danger py-2 px-3 mt-4">
+              <h1 class="mb-1 " style="font-size: 30px; font-weight: 700;">
+              Price:  {{price}}
+              </h1>
+
+            </div>
+
+          </div>
+          <div class="row mt-4">
+            <nav class="w-100">
+              <div class="nav nav-tabs" id="product-tab" role="tablist">
+                <a class="nav-item nav-link active  " id="product-desc-tab" data-toggle="tab" href="#product-desc"
+                  role="tab" aria-controls="product-desc" aria-selected="true">Description</a>
+                <a class="nav-item nav-link" id="product-comments-tab" data-toggle="tab" href="#product-comments"
+                  role="tab" aria-controls="product-comments" aria-selected="false">Comments</a>
+                <a class="nav-item nav-link" id="product-rating-tab" data-toggle="tab" href="#product-rating" role="tab"
+                  aria-controls="product-rating" aria-selected="false">Rating</a>
+              </div>
+            </nav>
+            <div class="tab-content p-3" id="nav-tabContent">
+
+              <div
+                class="tab-pane fade show active product-desc   row col-md-12 justify-content-center align-items-center"
+                id="product-desc" role="tabpanel" aria-labelledby="product-desc-tab">
+                <div class="col-md-6 m-auto" id="desc-content"></div>
+              </div>
+              <div class="tab-pane fade" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab">
+                Không có bình luận. </div>
+              <div class="tab-pane fade" id="product-rating" role="tabpanel" aria-labelledby="product-rating-tab">
+                Không có đánh giá.
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../../node_modules/html-to-rtf/app//browser/bundle.js"></script>
+<script>
+  $(document).ready(async function () {
+    let data = '{{product.description}}';
+
+    //convert string-html to html
+    function stripHtml(html) {
+      let tmp = document.createElement("DIV");
+      tmp.innerHTML = html;
+      return tmp.textContent || tmp.innerText || "";
+    }
+    document.getElementById('desc-content').innerHTML = stripHtml(data);
+    $('.product-image-thumb').on('click', function () {
+      var $image_element = $(this).find('img')
+      $('.product-image').prop('src', $image_element.attr('src'))
+      $('.product-image-thumb.active').removeClass('active')
+      $(this).addClass('active')
+    })
+  })
+</script>

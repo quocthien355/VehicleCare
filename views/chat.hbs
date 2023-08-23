@@ -1,0 +1,310 @@
+{{> "menu"}}
+{{> "header"}}
+
+<script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io();
+</script>
+<script type="module">
+    document.addEventListener("DOMContentLoaded", function () {
+        const firebaseConfig = {
+            apiKey: "AIzaSyAnAltVHuOkEDg9j2qCAS2o4J0RmHpFq6w",
+            authDomain: "vehiclecare-b914d.firebaseapp.com",
+            databaseURL: "https://vehiclecare-b914d-default-rtdb.firebaseio.com",
+            projectId: "vehiclecare-b914d",
+            storageBucket: "vehiclecare-b914d.appspot.com",
+            messagingSenderId: "368582506475",
+            appId: "1:368582506475:web:de27eec5d97b992d430bae",
+            measurementId: "G-CJP0GWYMJ3"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        const db = firebase.database();
+        const dataRef = db.ref('message');
+
+
+
+
+
+        // Xử lý button
+        var loadFirst = true;
+        var btn = document.getElementById('send');
+        var user = 1;
+        var isme = false
+        var messageId = '';
+        var detailId = '';
+        var url = 'https://www.pngitem.com/pimgs/m/338-3388366_meme-for-steam-avatars-hd-png-download.png'
+        var name = "Nguyễn Thị B"
+
+
+        // Đọc dữ liệu
+        dataRef.on('value', async (snapshot) => {
+            const data = await snapshot.val();
+            var loadFirst = true;
+            var liDetail = '';
+            var key = '';
+            console.log("data ----->", data[1]);
+            console.log(" data trong hàm ----->", Object.keys(data)[0]);
+
+            // dổ dữ liệu vào list chat - cột trái
+            // Ul list chat
+            var list = document.getElementById('list-chat');
+            
+            if (loadFirst) {
+                for (var i = 0; i < Object.keys(data).length; i++) {
+
+                    var keyListChat = Object.keys(data)[i];
+                    var dataDetail = data[keyListChat];
+                    var keyDetail = Object.keys(dataDetail)[0];
+
+                    // Tạo thẻ li trong item list chat và thêm style
+                    var li = document.createElement('li');
+                    li.classList.add('item-chat');
+                    // Tạo thẻ image trong list chat
+                    var image = document.createElement('img');
+                    image.classList.add('item-img');
+
+                    // Tạo thẻ p trong list chat
+                    var text = document.createElement('p');
+                    var item = dataDetail[keyDetail];
+
+                    // đổ dữ liệu
+                    image.src = item.url;
+                    text.textContent = item.name;
+
+                    li.appendChild(image);
+                    li.appendChild(text);
+                    list.appendChild(li);
+                }
+            }
+            loadFirst = false;
+            dataRef.on('child_added', async (snapshot) =>{
+                console.log("Có dữ liệu mới ----->", snapshot.val());
+                var container = document.getElementsByClassName('container');
+                container.innerHTML = "";
+                data = await snapshot.val();
+                for (var i = 0; i < Object.keys(data).length; i++) {
+
+                    var keyListChat = Object.keys(data)[i];
+                    var dataDetail = data[keyListChat];
+                    var keyDetail = Object.keys(dataDetail)[0];
+
+                    // Tạo thẻ li trong item list chat và thêm style
+                    var li = document.createElement('li');
+                    li.classList.add('item-chat');
+                    // Tạo thẻ image trong list chat
+                    var image = document.createElement('img');
+                    image.classList.add('item-img');
+
+                    // Tạo thẻ p trong list chat
+                    var text = document.createElement('p');
+                    var item = dataDetail[keyDetail];
+
+                    // đổ dữ liệu
+                    image.src = item.url;
+                    text.textContent = item.name;
+
+                    li.appendChild(image);
+                    li.appendChild(text);
+                    list.appendChild(li);
+                }
+            })
+
+            // Tạo thẻ li trong item list chat
+            var liItem = list.getElementsByTagName('li');
+            // Div detail chat
+            var detail = document.getElementById('detail-chat');
+
+            for (var i = 0; i < liItem.length; i++) {
+                (function (index) {
+                    liItem[index].addEventListener('click', function () {
+                        if (detail.childElementCount > 0) {
+                            detail.innerHTML = '';
+                        }
+                        console.log('Đang click vào item ' + index);
+                        liDetail = data[Object.keys(data)[index]];
+
+
+                        // lấy key của database <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                        detailId = Object.keys(liDetail);
+                        messageId = Object.keys(data)[index];
+                        detailId = Number(detailId[detailId.length - 1]) + 1;
+                        messageId = messageId[messageId.length - 1];
+
+
+
+                        // log ra object
+                        console.log("messageId ----->", messageId);
+                        console.log("detailId ----->", detailId);
+
+
+                        for (var j = 0; j < Object.keys(liDetail).length; j++) {
+                            key = Object.keys(liDetail)[j];
+
+                            // Tạo thẻ li trong detail chat
+                            var liItemDetail = document.createElement('li');
+                            // Tạo image trong detail chat
+                            var imageDetail = document.createElement('img');
+                            // Gắn class cho image
+                            imageDetail.classList.add('item-img');
+                            imageDetail.src = liDetail[key].url;
+                            // Tạo thẻ p cho detail chat
+                            var textDetail = document.createElement('p');
+                            // Gắn class cho thẻ p
+                            textDetail.classList.add('item-text');
+                            textDetail.textContent = liDetail[key].text;
+
+                            if (!liDetail[key].isme) {
+                                // Gắn class cho thẻ li nhân viên
+                                liItemDetail.classList.add('item-detail-chat2');
+                                liItemDetail.appendChild(textDetail);
+                                liItemDetail.appendChild(imageDetail);
+                            } else {
+                                // Gắn class cho thẻ li khách hàng
+                                liItemDetail.classList.add('item-detail-chat1');
+                                liItemDetail.appendChild(imageDetail);
+                                liItemDetail.appendChild(textDetail);
+                            }
+                            detail.appendChild(liItemDetail);
+                        }
+                    })
+                })(i);
+            }
+            btn.addEventListener('click', function () {
+                var text = document.getElementById('text').value;
+                var time = new Date().getTime();
+                const data = {
+                    user: user,
+                    name: name,
+                    text: text,
+                    time: time,
+                    isme: isme,
+                    url: url,
+                }
+                // Đường link database firebase
+                var link = firebase.database().ref('message/' + messageId + '/' + detailId);
+                console.log("time ----->", time, text, messageId, detailId);
+                console.log("link: message/" + messageId + '/' + detailId);
+
+
+                // Set dữ liệu
+                link.set({
+                    user: user,
+                    name: name,
+                    text: text,
+                    time: time,
+                    isme: isme,
+                    url: url,
+                })
+            });
+        });
+    });
+
+</script>
+<!-- >>>>>>>>>>>>>>>>>>>>>> -->
+<div class="app-content content">
+    <div class="content-wrapper">
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
+                <h3 class="content-header-title mb-0 d-inline-block">Chat</h3>
+                <div class="row breadcrumbs-top d-inline-block">
+                    <div class="breadcrumb-wrapper col-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.php">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item active">Chat
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Chat -->
+        <div class="container">
+            <!--List chat-->
+            <div class="list-chat">
+                <ul id="list-chat"></ul>
+            </div>
+
+            <!-- Detail Chat-->
+            <div class="detail-chat">
+                <ul id="detail-chat"></ul>
+                <div class="input-text">
+                    <input type="text" id="text" placeholder="Nhập tin nhắn">
+                    <button id="send">Gửi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .input-text {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 50px;
+        background-color: aliceblue;
+    }
+
+    .item-detail-chat2 {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        justify-content: flex-end;
+    }
+
+    .item-detail-chat1 {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .item-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+
+    .item-text {
+        margin-left: 10px;
+    }
+
+    .item-chat {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .detail-chat {
+        width: 70%;
+        height: 100%;
+        background-color: blanchedalmond;
+        justify-content: center;
+        align-items: center;
+        overflow: auto;
+    }
+
+    .list-chat {
+        width: 30%;
+        height: 100%;
+        align-items: center;
+    }
+
+    .container {
+
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+
+    }
+</style>
+{{> "footer"}}

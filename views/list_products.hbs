@@ -1,0 +1,145 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-left">
+                        <li class="breadcrumb-item"><a href="#">Product</a></li>
+                        <li class="breadcrumb-item active">List Product </li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="card-body col-md-12 ">
+            <table id="example1" class="table table-bordered table-striped ">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Brand</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Price (vnđ)</th>
+                        <th>Mfg</th>
+                        <th>Exp</th>
+                        <th>Userble km</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each products}}
+                    <tr>
+                        <td><img src="{{this.image}}" alt="" style="width: 100px; height: 100px;"></td>
+                        <td>{{this.name}}</td>
+                        <td>{{this.brand}}</td>
+                        <td>{{this.category}}</td>
+                        <td align="right">{{this.quantity}}</td>
+                        <td align="right" id="price">{{this.price}}</td>
+                        <td>{{this.mfg}}</td>
+                        <td>{{this.exp}}</td>
+                        <td>{{this.useble_km}} KM</td>
+                        <td class="project-actions text-right" style="width: 18%;">
+                            <a class="btn btn-primary btn-sm" href=" /product/view-product/{{this.id_product}}">
+                                <i class=" fas fa-folder">
+                                </i>
+                                View
+                            </a>
+                            <a class="btn btn-info btn-sm" href=" /product/edit-product/{{this.id_product}}">
+                                <i class="fas fa-pencil-alt">
+                                </i>
+                                Edit
+                            </a>
+                            <a class="btn btn-danger btn-sm" href="#">
+                                <i class="fas fa-trash">
+                                </i>
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Brand</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Price (vnđ)</th>
+                        <th>Mfg</th>
+                        <th>Exp</th>
+                        <th>Userble km</th>
+                        <th>Action</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!-- /.card-body -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="../../plugins/jszip/jszip.min.js"></script>
+<script src="../../plugins/pdfmake/pdfmake.min.js"></script>
+<script src="../../plugins/pdfmake/vfs_fonts.js"></script>
+<script src="../../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="../../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- AdminLTE App -->
+{{!--
+<script src="../../dist/js/adminlte.min.js"></script> --}}
+<!-- AdminLTE for demo purposes -->
+{{!--
+<script src="../../dist/js/demo.js"></script> --}}
+<!-- Page specific script -->
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    async function editProduct(id_product) {
+        var url_origin = location.origin;
+        const url = url_origin + "/product/edit-product/" + id_product;
+        const response = await fetch(url, {
+            method: "GET",
+        });
+    }
+</script>
+<script>
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+
+
+    });
+</script>
