@@ -22,7 +22,7 @@ const Product = {
         return con.query(query, [id], callback);
     },
     getById: (id,) => {
-        const query = 'SELECT id_product, p.name, mfg,exp,useble_km,price,quantity,description, c.name as category ,b.name as brand FROM product p INNER JOIN product_category c ON c.id_product_category=p.id_product_category INNER JOIN product_brand b ON b.id_product_brand= p.id_brand WHERE id_product = ' + id;
+        const query = 'SELECT id_product, p.name, mfg,exp,useble_km,p.id_brand,p.id_product_category,price,quantity,description, c.name as category ,b.name as brand FROM product p INNER JOIN product_category c ON c.id_product_category=p.id_product_category INNER JOIN product_brand b ON b.id_product_brand= p.id_brand WHERE id_product = ' + id;
         return new Promise((resolve, reject) => {
             con.query(query, (error, results) => {
                 if (error) { reject(error); }

@@ -240,7 +240,7 @@ module.exports.showEditProduct = async (req, res, next) => {
     const brands = await Brand.getAll();
     const product = await Product.getById(id);
     const images= await getImageByIdProduct(id);
-    // console.log(product);
+    console.log(product);
     // console.log(categories);
     // console.log(brands);
 
