@@ -6,7 +6,7 @@ const con = mysql.createConnection({
      database: "vehiclec_bughunter"
 });
 
-var del = connection._protocol._delegateError;
+var del = con._protocol._delegateError;
 
 con._protocol._delegateError = function(err, sequence){
      if (err.fatal) {
