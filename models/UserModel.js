@@ -19,6 +19,11 @@ const User ={
       query = 'UPDATE user SET number_phone = ?, name = ?, gender = ?, image = ? WHERE id_user = ?';
       const values = [number_phone,name,gender,image,id];
       return con.query(query, values, callback);
-   }
+   },
+   updatePassword: (number_phone, password, callback) => {
+      query = 'UPDATE user SET password = ? WHERE number_phone = ?';
+      const values = [password,number_phone];
+      return con.query(query, values, callback);
+   },
 };
 module.exports = User;

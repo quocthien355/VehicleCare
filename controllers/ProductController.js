@@ -189,8 +189,9 @@ module.exports.editProduct = async (req, res, next) => {
     //add product
     const product = await JSON.parse(JSON.stringify(req.body));
     const { id } = req.params;
-
-    const result = await editProduct(product.product_name, product.price, product.description, product.quantity, product.category_id, product.brand_id, id);
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>");
+  console.log(product);
+    const result = await Product.update(product.product_name, product.category_id, product.brand_id, product.quantity, product.price, product.useble_km,product.date_of_manufacture,product.expity_date,product.description, id);
 
     if (result) {
       // add images

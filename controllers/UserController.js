@@ -132,3 +132,33 @@ exports.checkUser = (req, res) => {
     res.status(500).json({ error: 'Đã xảy ra lỗi!' });
   }
 }
+
+module.exports.updatePassword = async (req, res) => {
+  try {
+    const { number_phone } = req.params;
+    const { password } = req.body;
+    const checkUser = await User.checkUser(number_phone);
+    if (checkUser.length > 0) {
+      return res.status(400).json({
+        status: false,
+        message: "Số điện thoại không tồn tại!!!"
+      })
+    } else {
+      const result = await User.updatePassword(number_phone, password);
+      if (result) {
+        res.status(200).json({
+          status: true,
+          message: "Update password success!!!"
+        })
+      } else {
+        res.status(400).json({
+          status: false,
+          message: "Update password fail!!!"
+        })
+      }
+    }
+
+  } catch (err) {
+    console.log(err);
+  }
+}

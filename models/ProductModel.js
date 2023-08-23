@@ -10,12 +10,16 @@ const Product = {
             });
         });
     },
-    updateProduct: (id, product, callback) => {
-        const { name, category, brand, mfg, exp, useble_km, price, status, description, image } = product;
-        const query = `UPDATE product SET name = ?, category = ?, brand = ?, mfg = ?, exp = ?, 
-        useble_km = ?, price = ?, status = ?, description = ?, image = ? WHERE id_product = ?`;
-        const values = [name, category, brand, mfg, exp, useble_km, price, status, description, image, id];
-        return con.query(query, values, callback);
+    update: (product_name, category_id, brand_id, quantity, price, useble_km,date_of_manufacture,expity_date,description, id) => {
+      
+        const query = `UPDATE product SET name = ?, id_product_category = ?, id_brand = ?,quantity=? ,price=?, useble_km=?,  mfg = ?, exp = ?, 
+         description = ? WHERE id_product = `+id;
+        return new Promise((resolve, reject) => {
+            con.query(query,[product_name, category_id, brand_id, quantity, price, useble_km,date_of_manufacture,expity_date,description],(error, results) => {
+                if (error) { reject(error); }
+                resolve(results);
+            });
+        });
     },
     deleteProduct: (id, callback) => {
         const query = 'DELETE FROM product WHERE id_product = ?'

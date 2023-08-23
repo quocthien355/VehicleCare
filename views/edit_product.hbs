@@ -39,7 +39,7 @@
 
                         <div class="form-group category">
                             <label>Category</label>
-                            <select id="category" class="form-control  select2bs4" style="width: 100%;">
+                            <select name="category" id="category" class="form-control  select2bs4" style="width: 100%;">
                                 {{#each categories}}
                                 <option value="{{this.id_product_category}}">{{this.name}}</option>
                                 {{/each}}
@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group brand">
                             <label>Brand</label>
-                            <select id="brand" class="form-control  select2bs4" style="width: 100%;">
+                            <select name="brand" id="brand" class="form-control  select2bs4" style="width: 100%;">
 
                                 {{#each brands}}
                                 <option value="{{this.id_product_brand}}">{{this.name}}</option>
@@ -335,11 +335,14 @@
             var date_of_manufacture = $('#quickForm').find('input[name="date_of_manufacture"]').val();
             var description = $('#summernote').summernote('code');
 
+   var url_origin = location.origin;
+            var id = "{{product.id_product}}"
+            const url = url_origin + "/product/edit-product/" + id
             async function uploadMultiple(formData) {
                 try {
                     var url_origin = location.origin;
-                    const response = await fetch(url_origin + "/product/add-product", {
-                        method: "POST",
+                    const response = await fetch(url, {
+                        method: "PUT",
                         body: formData,
                     });
                     const result = await response.json();
